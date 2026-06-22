@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+data/users.json
+data/preview-common.jpg
+.DS_Store

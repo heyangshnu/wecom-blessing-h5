@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>专属祝福</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div id="app" class="app hidden">
+    <div class="bg-gradient"></div>
+    <div class="bg-orbs">
+      <span class="orb orb-a"></span>
+      <span class="orb orb-b"></span>
+      <span class="orb orb-c"></span>
+    </div>
+    <div class="particles" id="particles"></div>
+
+    <main class="stage">
+      <div class="rainbow-semicircle" aria-hidden="true">
+        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 16 180 A 164 164 0 0 1 344 180" fill="none" stroke="#e40303" stroke-width="17" stroke-linecap="round" />
+          <path d="M 33 180 A 147 147 0 0 1 327 180" fill="none" stroke="#ff8c00" stroke-width="17" stroke-linecap="round" />
+          <path d="M 50 180 A 130 130 0 0 1 310 180" fill="none" stroke="#ffed00" stroke-width="17" stroke-linecap="round" />
+          <path d="M 67 180 A 113 113 0 0 1 293 180" fill="none" stroke="#008026" stroke-width="17" stroke-linecap="round" />
+          <path d="M 84 180 A 96 96 0 0 1 276 180" fill="none" stroke="#004dff" stroke-width="17" stroke-linecap="round" />
+          <path d="M 101 180 A 79 79 0 0 1 259 180" fill="none" stroke="#750787" stroke-width="17" stroke-linecap="round" />
+          <path d="M 118 180 A 62 62 0 0 1 242 180" fill="none" stroke="#ffffff" stroke-width="17" stroke-linecap="round" />
+        </svg>
+      </div>
+      <p class="greeting">很高兴认识你</p>
+      <p class="intro">送你一句小小祝福</p>
+
+      <div class="card" id="blessing-card">
+        <p class="blessing" id="blessing-content"></p>
+      </div>
+
+      <div class="sparkles" aria-hidden="true">
+        <span>✦</span><span>✧</span><span>✦</span>
+      </div>
+    </main>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="loader"></div>
+    <p>正在开启祝福...</p>
+  </div>
+
+  <div id="error" class="error hidden">
+    <p>请在企业微信中打开链接</p>
+  </div>
+
+  <script src="/js/app.js?v=4"></script>
+</body>
+</html>
