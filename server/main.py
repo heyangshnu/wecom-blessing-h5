@@ -89,6 +89,17 @@ def static_image(filename: str):
     return FileResponse(path, media_type=media, headers=NO_CACHE)
 
 
+@app.get("/videos/{filename}")
+def static_video(filename: str):
+    path = PUBLIC_DIR / "videos" / filename
+    if not path.is_file():
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail="Not found")
+    media = "video/mp4" if filename.endswith(".mp4") else "application/octet-stream"
+    return FileResponse(path, media_type=media, headers=NO_CACHE)
+
+
 @app.get("/")
 def root_redirect():
     return RedirectResponse(BLESSING_PATH)

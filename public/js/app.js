@@ -86,11 +86,23 @@ async function fetchBlessing() {
   return res.json();
 }
 
-function restartMascotGif() {
-  const img = $("mascot-gif");
-  if (!img) return;
-  const base = img.src.split("?")[0];
-  img.src = `${base}?t=${Date.now()}`;
+function restartMascotVideo() {
+  const video = $("mascot-video");
+  if (!video) return;
+  video.currentTime = 0;
+  const playPromise = video.play();
+  if (playPromise?.catch) {
+    playPromise.catch(() => {});
+  }
+}
+
+function initMascotVideos() {
+  document.querySelectorAll("video").forEach((video) => {
+    const playPromise = video.play();
+    if (playPromise?.catch) {
+      playPromise.catch(() => {});
+    }
+  });
 }
 
 async function loadBlessing(showLoader = false) {
@@ -101,7 +113,7 @@ async function loadBlessing(showLoader = false) {
     $("app")?.classList.add("hidden");
     $("loading")?.classList.remove("hidden");
   } else {
-    restartMascotGif();
+    restartMascotVideo();
   }
 
   try {
@@ -117,6 +129,7 @@ async function loadBlessing(showLoader = false) {
 
 function init() {
   createParticles();
+  initMascotVideos();
   loadBlessing(true);
   $("refresh-btn")?.addEventListener("click", () => loadBlessing(false));
 }

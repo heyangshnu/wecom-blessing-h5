@@ -24,15 +24,20 @@
     <main class="stage">
       <section class="hero">
         <div class="mascot-spotlight" aria-hidden="true"></div>
-        <img
-          id="mascot-gif"
-          class="mascot-gif"
-          src="/images/mascot-bull-cutout.gif"
-          alt="祝福小牛"
-          width="192"
-          height="246"
-          decoding="async"
-        />
+        <video
+          id="mascot-video"
+          class="mascot-video"
+          src="/videos/mascot-bull.mp4"
+          width="480"
+          height="480"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          disablePictureInPicture
+          preload="auto"
+        ></video>
         <div class="mascot-ground" aria-hidden="true"></div>
       </section>
 
@@ -50,7 +55,18 @@
   </div>
 
   <div id="loading" class="loading">
-    <img class="loading-gif" src="/images/mascot-bull-cutout.gif" alt="" width="96" height="123" />
+    <video
+      class="loading-video"
+      src="/videos/mascot-bull.mp4"
+      width="120"
+      height="120"
+      autoplay
+      muted
+      loop
+      playsinline
+      webkit-playsinline
+      preload="auto"
+    ></video>
     <p>小牛正在准备祝福...</p>
   </div>
 
@@ -58,6 +74,6 @@
     <p>加载失败，请刷新重试</p>
   </div>
 
-  <script src="/js/app.js?v=10"></script>
+  <script src="/js/app.js?v=11"></script>
 </body>
 </html>
