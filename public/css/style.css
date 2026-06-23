@@ -169,9 +169,23 @@ html, body {
   pointer-events: none;
 }
 
-.mascot-video {
+.mascot-video-wrap,
+.loading-video-wrap {
   position: relative;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 16px 28px rgba(90, 40, 60, 0.22));
+}
+
+.loading-video-wrap {
+  filter: drop-shadow(0 10px 20px rgba(80, 40, 20, 0.18));
+  margin-bottom: 16px;
+}
+
+.mascot-video {
+  position: relative;
   display: block;
   width: min(240px, 58vw);
   height: auto;
@@ -181,9 +195,20 @@ html, body {
   -webkit-user-drag: none;
   pointer-events: none;
   background: transparent;
-  filter: drop-shadow(0 16px 28px rgba(90, 40, 60, 0.22));
   opacity: 0;
   animation: mascotEnter 0.75s cubic-bezier(0.34, 1.4, 0.64, 1) 0.1s forwards;
+}
+
+/* iOS / 企微：MP4 黑底用 screen 混色抠除 */
+.mascot-video.use-screen-blend,
+.loading-video.use-screen-blend {
+  mix-blend-mode: screen;
+}
+
+/* Android：透明 WebM 不需要混色 */
+.mascot-video.has-alpha,
+.loading-video.has-alpha {
+  mix-blend-mode: normal;
 }
 
 .mascot-ground {
@@ -345,8 +370,6 @@ html, body {
   height: auto;
   aspect-ratio: 1;
   object-fit: contain;
-  margin-bottom: 16px;
-  filter: drop-shadow(0 10px 20px rgba(80, 40, 20, 0.18));
   background: transparent;
 }
 

@@ -24,20 +24,24 @@
     <main class="stage">
       <section class="hero">
         <div class="mascot-spotlight" aria-hidden="true"></div>
-        <video
-          id="mascot-video"
-          class="mascot-video"
-          src="/videos/mascot-bull.mp4"
-          width="480"
-          height="480"
-          autoplay
-          muted
-          loop
-          playsinline
-          webkit-playsinline
-          disablePictureInPicture
-          preload="auto"
-        ></video>
+        <div class="mascot-video-wrap">
+          <video
+            id="mascot-video"
+            class="mascot-video"
+            width="480"
+            height="480"
+            autoplay
+            muted
+            loop
+            playsinline
+            webkit-playsinline
+            disablePictureInPicture
+            preload="auto"
+          >
+            <source src="/videos/mascot-bull-alpha.webm" type="video/webm" />
+            <source src="/videos/mascot-bull.mp4" type="video/mp4" />
+          </video>
+        </div>
         <div class="mascot-ground" aria-hidden="true"></div>
       </section>
 
@@ -55,18 +59,22 @@
   </div>
 
   <div id="loading" class="loading">
-    <video
-      class="loading-video"
-      src="/videos/mascot-bull.mp4"
-      width="120"
-      height="120"
-      autoplay
-      muted
-      loop
-      playsinline
-      webkit-playsinline
-      preload="auto"
-    ></video>
+    <div class="loading-video-wrap">
+      <video
+        class="loading-video"
+        width="120"
+        height="120"
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+      >
+        <source src="/videos/mascot-bull-alpha.webm" type="video/webm" />
+        <source src="/videos/mascot-bull.mp4" type="video/mp4" />
+      </video>
+    </div>
     <p>小牛正在准备祝福...</p>
   </div>
 
@@ -74,6 +82,6 @@
     <p>加载失败，请刷新重试</p>
   </div>
 
-  <script src="/js/app.js?v=11"></script>
+  <script src="/js/app.js?v=12"></script>
 </body>
 </html>

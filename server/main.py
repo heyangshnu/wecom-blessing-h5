@@ -96,7 +96,7 @@ def static_video(filename: str):
         from fastapi import HTTPException
 
         raise HTTPException(status_code=404, detail="Not found")
-    media = "video/mp4" if filename.endswith(".mp4") else "application/octet-stream"
+    media = "video/webm" if filename.endswith(".webm") else "video/mp4" if filename.endswith(".mp4") else "application/octet-stream"
     return FileResponse(path, media_type=media, headers=NO_CACHE)
 
 

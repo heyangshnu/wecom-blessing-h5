@@ -86,6 +86,24 @@ async function fetchBlessing() {
   return res.json();
 }
 
+function setupVideoCutout(video) {
+  if (!video) return;
+
+  const applyMode = () => {
+    const src = video.currentSrc || video.src || "";
+    if (src.includes(".webm")) {
+      video.classList.add("has-alpha");
+      video.classList.remove("use-screen-blend");
+    } else {
+      video.classList.remove("has-alpha");
+      video.classList.add("use-screen-blend");
+    }
+  };
+
+  video.addEventListener("loadeddata", applyMode);
+  applyMode();
+}
+
 function restartMascotVideo() {
   const video = $("mascot-video");
   if (!video) return;
@@ -98,6 +116,7 @@ function restartMascotVideo() {
 
 function initMascotVideos() {
   document.querySelectorAll("video").forEach((video) => {
+    setupVideoCutout(video);
     const playPromise = video.play();
     if (playPromise?.catch) {
       playPromise.catch(() => {});
