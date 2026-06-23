@@ -181,7 +181,7 @@ html, body {
 
 .loading-video-wrap {
   filter: drop-shadow(0 10px 20px rgba(80, 40, 20, 0.18));
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .mascot-video-source {
@@ -208,10 +208,12 @@ html, body {
 
 .loading-canvas {
   display: block;
-  width: min(120px, 32vw);
+  width: min(220px, 55vw);
   height: auto;
   aspect-ratio: 1;
   pointer-events: none;
+  opacity: 0;
+  animation: mascotEnter 0.65s cubic-bezier(0.34, 1.4, 0.64, 1) 0.05s forwards;
 }
 
 .mascot-ground {
@@ -368,9 +370,18 @@ html, body {
   z-index: 10;
 }
 
-.loading p, .error p {
+.loading p {
   color: #ffffff;
-  font-size: 14px;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.35s forwards;
+}
+
+.error p {
+  color: #ffffff;
+  font-size: 15px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 

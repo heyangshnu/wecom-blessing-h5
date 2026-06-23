@@ -3,9 +3,14 @@ const PARTICLE_COLORS = ["#fff176", "#ff80ab", "#80deea", "#b388ff", "#69f0ae", 
 const GREEN_KEY_MIN = 118;
 const GREEN_KEY_SOFT = 42;
 const GREEN_DOMINANCE = 18;
+const MIN_LOADING_MS = 1800;
 
 function $(id) {
   return document.getElementById(id);
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function createParticles() {
@@ -123,6 +128,17 @@ function createMascotPlayer(video, canvas) {
   let rafId = 0;
   let bufferCanvas = null;
   let bufferCtx = null;
+  let readyResolved = false;
+  let readyResolve;
+  const ready = new Promise((resolve) => {
+    readyResolve = resolve;
+  });
+
+  const markReady = () => {
+    if (readyResolved) return;
+    readyResolved = true;
+    readyResolve();
+  };
 
   const draw = () => {
     if (video.readyState < 2) {
@@ -153,6 +169,7 @@ function createMascotPlayer(video, canvas) {
 
     ctx.clearRect(0, 0, vw, vh);
     ctx.putImageData(keyed, 0, 0);
+    markReady();
 
     rafId = requestAnimationFrame(draw);
   };
@@ -180,7 +197,7 @@ function createMascotPlayer(video, canvas) {
     start();
   }
 
-  return { start, restart, stop };
+  return { start, restart, stop, ready };
 }
 
 let mascotPlayer = null;
@@ -195,6 +212,48 @@ function restartMascotVideo() {
   mascotPlayer?.restart();
 }
 
+function waitForVideo(video, timeoutMs = 8000) {
+  if (!video) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+
+    const timer = setTimeout(finish, timeoutMs);
+
+    if (video.readyState >= 2) {
+      clearTimeout(timer);
+      finish();
+      return;
+    }
+
+    const onReady = () => {
+      clearTimeout(timer);
+      video.removeEventListener("loadeddata", onReady);
+      video.removeEventListener("canplay", onReady);
+      finish();
+    };
+
+    video.addEventListener("loadeddata", onReady);
+    video.addEventListener("canplay", onReady);
+    video.load();
+  });
+}
+
+async function waitForInitialLoad() {
+  await Promise.all([
+    waitForVideo($("loading-video")),
+    waitForVideo($("mascot-video")),
+    loadingPlayer?.ready ?? Promise.resolve(),
+    mascotPlayer?.ready ?? Promise.resolve(),
+    delay(MIN_LOADING_MS),
+  ]);
+}
+
 async function loadBlessing(showLoader = false) {
   const refreshBtn = $("refresh-btn");
   if (refreshBtn) refreshBtn.disabled = true;
@@ -203,12 +262,16 @@ async function loadBlessing(showLoader = false) {
     $("app")?.classList.add("hidden");
     $("loading")?.classList.remove("hidden");
     loadingPlayer?.start();
+    mascotPlayer?.start();
   } else {
     restartMascotVideo();
   }
 
   try {
-    const data = await fetchBlessing();
+    const [data] = await Promise.all([
+      fetchBlessing(),
+      showLoader ? waitForInitialLoad() : Promise.resolve(),
+    ]);
     showApp();
     renderBlessing(data);
     mascotPlayer?.start();
