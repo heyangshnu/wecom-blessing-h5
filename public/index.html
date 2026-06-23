@@ -27,7 +27,7 @@
         <div class="mascot-video-wrap">
           <video
             id="mascot-video"
-            class="mascot-video"
+            class="mascot-video-source"
             width="480"
             height="480"
             autoplay
@@ -37,10 +37,9 @@
             webkit-playsinline
             disablePictureInPicture
             preload="auto"
-          >
-            <source src="/videos/mascot-bull-alpha.webm" type="video/webm" />
-            <source src="/videos/mascot-bull.mp4" type="video/mp4" />
-          </video>
+            src="/videos/mascot-bull.mp4"
+          ></video>
+          <canvas id="mascot-canvas" class="mascot-canvas" width="480" height="480" aria-label="祝福小牛"></canvas>
         </div>
         <div class="mascot-ground" aria-hidden="true"></div>
       </section>
@@ -61,7 +60,8 @@
   <div id="loading" class="loading">
     <div class="loading-video-wrap">
       <video
-        class="loading-video"
+        id="loading-video"
+        class="mascot-video-source"
         width="120"
         height="120"
         autoplay
@@ -70,10 +70,9 @@
         playsinline
         webkit-playsinline
         preload="auto"
-      >
-        <source src="/videos/mascot-bull-alpha.webm" type="video/webm" />
-        <source src="/videos/mascot-bull.mp4" type="video/mp4" />
-      </video>
+        src="/videos/mascot-bull.mp4"
+      ></video>
+      <canvas id="loading-canvas" class="loading-canvas" width="480" height="480"></canvas>
     </div>
     <p>小牛正在准备祝福...</p>
   </div>
@@ -82,6 +81,6 @@
     <p>加载失败，请刷新重试</p>
   </div>
 
-  <script src="/js/app.js?v=12"></script>
+  <script src="/js/app.js?v=13"></script>
 </body>
 </html>
