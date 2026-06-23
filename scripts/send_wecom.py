@@ -76,7 +76,7 @@ def main() -> None:
     print(f"封面图: {PREVIEW_URL}")
 
     for user in users[:5]:
-        print(f"  - {user['name']} ({user['userid']}) · {user['department']}")
+        print(f"  - {user['name']} ({user['userid']})")
     if len(users) > 5:
         print(f"  ... 其余 {len(users) - 5} 人")
 

@@ -57,7 +57,7 @@ def generate_common_preview(output_path: Path) -> Path:
 
     draw.text((width // 2, 165), "你好，初次见面", fill="#ffffff", font=title_font, anchor="mm")
     draw.text((width // 2, 235), "请多多指教", fill="#fff8dc", font=title_font, anchor="mm")
-    draw.text((width // 2, 340), "✨ 点击查看专属祝福 ✨", fill="#ffffff", font=hint_font, anchor="mm")
+    draw.text((width // 2, 340), "✨ 点击开启随机祝福 ✨", fill="#ffffff", font=hint_font, anchor="mm")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     img.save(output_path, "JPEG", quality=92)

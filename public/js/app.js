@@ -42,6 +42,7 @@ function typewriter(element, text, speed = 42) {
 
 function showApp() {
   $("loading")?.classList.add("hidden");
+  $("error")?.classList.add("hidden");
   $("app")?.classList.remove("hidden");
 }
 
@@ -58,35 +59,66 @@ function showError(message) {
 function renderBlessing(data) {
   const contentEl = $("blessing-content");
   if (!contentEl) {
-    showError("页面结构异常，请强制刷新后重试");
+    showError("页面结构异常，请刷新重试");
     return;
   }
-  if (!data || !data.content) {
-    showError("祝福内容为空，请重新打开链接");
+  if (!data?.content) {
+    showError("祝福内容为空，请刷新重试");
     return;
   }
-  setTimeout(() => typewriter(contentEl, data.content), 900);
+
+  const greetingEl = $("greeting");
+  const introEl = $("intro");
+
+  if (greetingEl && data.greeting) greetingEl.textContent = data.greeting;
+  if (introEl && data.intro) introEl.textContent = data.intro;
+
+  contentEl.textContent = "";
+  setTimeout(() => typewriter(contentEl, data.content), 400);
 }
 
-async function init() {
-  createParticles();
+async function fetchBlessing() {
+  const res = await fetch("/api/blessing/random", { cache: "no-store" });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => ({}));
+    throw new Error(payload.detail || "加载失败");
+  }
+  return res.json();
+}
+
+function restartMascotGif() {
+  const img = $("mascot-gif");
+  if (!img) return;
+  const base = img.src.split("?")[0];
+  img.src = `${base}?t=${Date.now()}`;
+}
+
+async function loadBlessing(showLoader = false) {
+  const refreshBtn = $("refresh-btn");
+  if (refreshBtn) refreshBtn.disabled = true;
+
+  if (showLoader) {
+    $("app")?.classList.add("hidden");
+    $("loading")?.classList.remove("hidden");
+  } else {
+    restartMascotGif();
+  }
 
   try {
-    const res = await fetch("/api/blessing/me", { credentials: "same-origin" });
-    if (res.status === 401) {
-      window.location.href = "/bless";
-      return;
-    }
-    if (!res.ok) {
-      const payload = await res.json().catch(() => ({}));
-      throw new Error(payload.detail || "加载失败");
-    }
-    const data = await res.json();
+    const data = await fetchBlessing();
     showApp();
     renderBlessing(data);
   } catch (err) {
-    showError(err?.message || "请在企业微信中打开链接");
+    showError(err?.message || "加载失败，请刷新重试");
+  } finally {
+    if (refreshBtn) refreshBtn.disabled = false;
   }
+}
+
+function init() {
+  createParticles();
+  loadBlessing(true);
+  $("refresh-btn")?.addEventListener("click", () => loadBlessing(false));
 }
 
 if (document.readyState === "loading") {

@@ -33,7 +33,7 @@ def main() -> None:
 
     print(f"共 {len(users)} 人：")
     for user in users:
-        print(f"- {user['name']} ({user['userid']}) · {user['department']}")
+        print(f"- {user['name']} ({user['userid']})")
 
 
 if __name__ == "__main__":
