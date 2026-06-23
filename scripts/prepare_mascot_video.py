@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""去除小牛视频黑色背景，生成透明 WebM。"""
+"""去除小牛视频绿幕背景，生成透明 WebM。"""
 
 from __future__ import annotations
 
@@ -11,6 +11,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "public" / "videos" / "mascot-bull.mp4"
 OUT = ROOT / "public" / "videos" / "mascot-bull-alpha.webm"
+
+# 绿幕背景采样约 #219d3f
+GREEN_SCREEN_COLOR = "0x219d3f"
+GREEN_SCREEN_SIMILARITY = "0.12"
+GREEN_SCREEN_BLEND = "0.04"
 
 
 def main() -> None:
@@ -27,7 +32,7 @@ def main() -> None:
         "-i",
         str(SRC),
         "-vf",
-        "colorkey=0x000000:0.12:0.06",
+        f"chromakey={GREEN_SCREEN_COLOR}:{GREEN_SCREEN_SIMILARITY}:{GREEN_SCREEN_BLEND}",
         "-an",
         "-c:v",
         "libvpx-vp9",

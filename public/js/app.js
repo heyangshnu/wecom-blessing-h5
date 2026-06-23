@@ -1,7 +1,8 @@
 const PARTICLE_COLORS = ["#fff176", "#ff80ab", "#80deea", "#b388ff", "#69f0ae", "#ffd180"];
 
-const CHROMA_THRESHOLD = 34;
-const CHROMA_SOFTNESS = 38;
+const GREEN_KEY_MIN = 118;
+const GREEN_KEY_SOFT = 42;
+const GREEN_DOMINANCE = 18;
 
 function $(id) {
   return document.getElementById(id);
@@ -89,26 +90,25 @@ async function fetchBlessing() {
   return res.json();
 }
 
-function applyChromaKey(imageData) {
+function applyGreenScreenKey(imageData) {
   const { data } = imageData;
-  const hard = CHROMA_THRESHOLD;
-  const soft = CHROMA_SOFTNESS;
+  const hard = GREEN_KEY_MIN;
+  const soft = GREEN_KEY_SOFT;
+  const dominance = GREEN_DOMINANCE;
 
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i];
     const g = data[i + 1];
     const b = data[i + 2];
-    const peak = Math.max(r, g, b);
 
-    if (peak <= hard) {
-      data[i + 3] = 0;
+    const greenLead = g - Math.max(r, b);
+    if (greenLead < dominance || g < hard) {
       continue;
     }
 
-    if (peak < hard + soft) {
-      const alpha = ((peak - hard) / soft) * 255;
-      data[i + 3] = Math.min(data[i + 3], alpha);
-    }
+    const keyAmount = Math.min(1, (g - hard) / soft + greenLead / 80);
+    const alpha = Math.round(255 * (1 - keyAmount));
+    data[i + 3] = Math.min(data[i + 3], alpha);
   }
 
   return imageData;
@@ -130,8 +130,8 @@ function createMascotPlayer(video, canvas) {
       return;
     }
 
-    const vw = video.videoWidth || 480;
-    const vh = video.videoHeight || 480;
+    const vw = video.videoWidth || 720;
+    const vh = video.videoHeight || 720;
 
     if (canvas.width !== vw || canvas.height !== vh) {
       canvas.width = vw;
@@ -149,7 +149,7 @@ function createMascotPlayer(video, canvas) {
     bufferCtx.drawImage(video, 0, 0, vw, vh);
 
     const frame = bufferCtx.getImageData(0, 0, vw, vh);
-    const keyed = applyChromaKey(frame);
+    const keyed = applyGreenScreenKey(frame);
 
     ctx.clearRect(0, 0, vw, vh);
     ctx.putImageData(keyed, 0, 0);
