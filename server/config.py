@@ -1,7 +1,11 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT / ".env")
+
 DATA_DIR = ROOT / "data"
 PUBLIC_DIR = ROOT / "public"
 PREVIEW_IMAGE = DATA_DIR / "preview-common.jpg"
